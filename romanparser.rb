@@ -12,17 +12,23 @@ module RomanParser
     roman_array = roman_string.upcase.each_char.to_a.map { |c| Roman_lookup[c.to_sym] }
 
     sum = 0
-    memo = roman_array.shift
 
     while roman_array.length > 0
+
+      # If it's just a single numeral left, add it and break the loop.
+      if roman_array.length == 1
+        sum += roman_array.shift
+        break
+      end
+
+      memo = roman_array.shift
+
+      # If the second numeral is greater than the first, subtract the lesser
+      # numeral and add the remainder to sum and shift the greater numeral from
+      # array. Else just add first numeral to sum.
       if roman_array.first > memo
         sum += roman_array.shift - memo
       else
-        sum += memo
-      end
-      memo = roman_array.shift
-
-      if roman_array.length == 0 && memo
         sum += memo
       end
     end
